@@ -1,8 +1,8 @@
-CREATE OR REFRESH STREAMING LIVE TABLE lakehouse.bronze.yfinance
+CREATE OR REFRESH STREAMING LIVE TABLE lakehouse_fivetran.bronze.yfinance
 TBLPROPERTIES ("quality" = "bronze")
 AS
 SELECT *
 FROM cloud_files(
-  '/Volumes/lakehouse/raw/yfinance/commodities/latest_prices/',
+  '/Volumes/lakehouse_fivetran/raw/yfinance/commodities/latest_prices/',
   'json'
 );

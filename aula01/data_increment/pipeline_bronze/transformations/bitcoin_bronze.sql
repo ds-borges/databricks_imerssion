@@ -8,7 +8,7 @@ AS
 -- Lê os arquivos JSON da pasta RAW usando cloud_files (Auto Loader)
 SELECT *
 FROM cloud_files(
-  '/Volumes/lakehouse/raw/coinbase/coinbase/bitcoin_spot',  -- caminho de origem
+  '/Volumes/lakehouse_fivetran/raw/coinbase/coinbase/bitcoin_spot',  -- caminho de origem
   'json',                                                   -- formato
   map(
     -- Ingestão incremental:

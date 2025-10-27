@@ -1,13 +1,13 @@
+USE CATALOG lakehouse_imerssion;
+USE SCHEMA bronze;
+
 -- =====================================================
--- Bronze Layer: Customers Data Ingestion
--- =====================================================
--- Descrição: Ingestão de dados de clientes via cloud_files()
--- Fonte: /Volumes/lakehouse_imerssion/raw_public/customers
--- Schema: Inferência automática com header=true
--- Tipo: STREAMING TABLE para processamento incremental
+-- Tabela Bronze: customers
+-- Descrição: Ingestão de dados de clientes do volume CSV
+-- Fonte: /Volumes/lakehouse/raw_public/customers
 -- =====================================================
 
-CREATE OR REFRESH STREAMING TABLE bronze.customers
+CREATE OR REFRESH STREAMING TABLE customers
 AS SELECT 
   customer_id,
   customer_name,
@@ -19,7 +19,11 @@ AS SELECT
   created_at,
   current_timestamp() as ingested_at
 FROM cloud_files(
-  "/Volumes/lakehouse/raw_public/customers",
-  "csv",
-  map("header", "true", "inferSchema", "true")
+  '/Volumes/lakehouse_imerssion/raw_public/customers',
+  'csv',
+  map(
+    'header', 'true',
+    'inferSchema', 'true',
+    'cloudFiles.schemaLocation', '/Volumes/lakehouse_imerssion/bronze/managed/customerschema/'
+  )
 )

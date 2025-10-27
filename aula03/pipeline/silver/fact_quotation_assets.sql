@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE silver.fact_quotation_assets AS
+CREATE OR REPLACE TABLE lakehouse.silver.fact_quotation_assets AS
 SELECT 
   CASE 
     WHEN UPPER(ativo) IN ('BTC','BTC-USD') THEN 'BTC'
@@ -14,9 +14,9 @@ SELECT
   DATE_TRUNC('hour', CAST(horario_coleta AS TIMESTAMP)) AS data_hora_aproximada,
   CURRENT_TIMESTAMP() AS processed_at
 FROM (
-  SELECT ativo, preco, moeda, horario_coleta FROM bronze.bitcoin
+  SELECT ativo, preco, moeda, horario_coleta FROM lakehouse.bronze.bitcoin
   UNION ALL
-  SELECT ativo, preco, moeda, horario_coleta FROM bronze.yfinance
+  SELECT ativo, preco, moeda, horario_coleta FROM lakehouse.bronze.yfinance
 ) sub
 WHERE
   preco > 0

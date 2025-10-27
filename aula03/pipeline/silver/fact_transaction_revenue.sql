@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE silver.fact_transaction_revenue AS
+CREATE OR REPLACE TABLE lakehouse.silver.fact_transaction_revenue AS
 SELECT 
   t.transaction_id,
   t.data_hora,
@@ -34,11 +34,11 @@ SELECT
   -- Receita de taxa: 0.25% sobre valor total
   (t.quantidade * q.preco * 0.0025) AS fee_revenue,
   CURRENT_TIMESTAMP() AS processed_at
-FROM silver.fact_transaction_assets t
-INNER JOIN silver.fact_quotation_assets q
+FROM lakehouse.silver.fact_transaction_assets t
+INNER JOIN lakehouse.silver.fact_quotation_assets q
   ON t.asset_symbol = q.asset_symbol 
   AND t.data_hora_aproximada = q.data_hora_aproximada
-INNER JOIN silver.dim_clientes c
+INNER JOIN lakehouse.silver.dim_clientes c
   ON t.cliente_id = c.customer_id
 WHERE
   (t.quantidade * q.preco) > 0                             -- gross_value_positivo
